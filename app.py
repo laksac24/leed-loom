@@ -182,7 +182,7 @@ def recomend_crop():
     os.system("pdflatex pitch.tex")
     import shutil
     shutil.move("pitch.pdf", "static/pitch.pdf")
-    return render_template('index2.html', result = result2)
+    return '', 200
 import shutil
 from flask import send_from_directory
 
