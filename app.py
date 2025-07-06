@@ -15,12 +15,26 @@ from google import genai
 from google.genai import types
 from flask import Flask, render_template, request
 
+# def setup_driver():
+#     options = Options()
+#     options.add_argument("--headless")
+#     options.add_argument("--disable-gpu")
+#     options.add_argument('--no-sandbox')
+#     driver = webdriver.Chrome(options=options)
+#     return driver
+
+from selenium.webdriver.chrome.service import Service
+
 def setup_driver():
     options = Options()
-    options.add_argument("--headless")
+    options.add_argument("--headless=new")  # 'new' is important for latest Chrome
+    options.add_argument("--disable-dev-shm-usage")  # For low-memory environments
+    options.add_argument("--no-sandbox")  # Required in Docker
     options.add_argument("--disable-gpu")
-    options.add_argument('--no-sandbox')
-    driver = webdriver.Chrome(options=options)
+    options.add_argument("--remote-debugging-port=9222")
+
+    service = Service("/usr/bin/chromedriver")  # Ensure correct path if needed
+    driver = webdriver.Chrome(service=service, options=options)
     return driver
 
 def scrape_website_info(url):
