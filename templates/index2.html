@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lead Loom</title>
+  <style>
+    /* [Your existing CSS here] */
+  </style>
+</head>
+<body>
+  <h1>Lead Loom</h1>
+
+  <form method="post" action="/predict" id="lead-form">
+    <div>
+      <label for="url">Enter the URL of the site</label>
+      <input type="text" id="url" name="url" placeholder="Enter website url" required />
+    </div>
+    <div>
+      <label for="API">Enter your Gemini API key</label>
+      <input type="text" id="API" name="API" placeholder="Gemini API key" required />
+    </div>
+    <div>
+      <button type="submit">Generate PDF</button>
+    </div>
+  </form>
+
+  <script>
+    document.getElementById('lead-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+
+      fetch('/predict', {
+        method: 'POST',
+        body: formData
+      })
+      .then(res => {
+        if (res.ok) {
+          // Automatically trigger download
+          window.location.href = "/download";
+        } else {
+          alert("Failed to generate PDF.");
+        }
+      });
+    });
+  </script>
+</body>
+</html>

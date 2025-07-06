@@ -133,7 +133,7 @@ def write_brand_summary(url, keywords, site_info):
 app = Flask(__name__)
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('index2.html')
 
 @app.route('/predict', methods = ['POST'])
 def recomend_crop():
@@ -180,7 +180,15 @@ def recomend_crop():
     file.close()
     import os
     os.system("pdflatex pitch.tex")
-    return render_template('index.html', result = result2)
+    import shutil
+    shutil.move("pitch.pdf", "static/pitch.pdf")
+    return render_template('index2.html', result = result2)
+import shutil
+from flask import send_from_directory
+
+@app.route('/download')
+def download_pdf():
+    return send_from_directory('static', 'pitch.pdf', as_attachment=True)
 
 import os
 if __name__ == '__main__':
