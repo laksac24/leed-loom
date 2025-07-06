@@ -2,38 +2,42 @@ FROM python:3.10-slim
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
+    wget gnupg2 curl unzip \
     texlive-latex-base \
     texlive-latex-extra \
     texlive-fonts-recommended \
     texlive-xetex \
-    chromium-driver \
-    chromium \
     fonts-liberation \
-    libappindicator3-1 \
+    libnss3 \
+    libxss1 \
     libasound2 \
     libatk-bridge2.0-0 \
-    libatk1.0-0 \
-    libcups2 \
-    libdbus-1-3 \
-    libgdk-pixbuf2.0-0 \
-    libnspr4 \
-    libnss3 \
+    libgtk-3-0 \
     libx11-xcb1 \
     libxcomposite1 \
+    libxcursor1 \
     libxdamage1 \
     libxrandr2 \
     xdg-utils \
-    wget \
-    unzip \
-    curl && \
-    rm -rf /var/lib/apt/lists/*
+    chromium \
+    chromium-driver \
+    && rm -rf /var/lib/apt/lists/*
 
+# Set environment variables for Chromium
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROMEDRIVER_PATH=/usr/lib/chromium/chromedriver
+
+# Set working directory
 WORKDIR /app
 
+# Copy files
 COPY . /app
 
+# Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Expose port
 EXPOSE 5000
 
+# Run the app
 CMD ["python", "app.py"]

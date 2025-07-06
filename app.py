@@ -25,15 +25,19 @@ from flask import Flask, render_template, request
 
 from selenium.webdriver.chrome.service import Service
 
+# from selenium.webdriver.chrome.service import Service
+
 def setup_driver():
     options = Options()
-    options.add_argument("--headless=new")  # 'new' is important for latest Chrome
-    options.add_argument("--disable-dev-shm-usage")  # For low-memory environments
-    options.add_argument("--no-sandbox")  # Required in Docker
+    options.binary_location = "/usr/bin/chromium"
+    options.add_argument("--headless=new")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--disable-gpu")
+    options.add_argument("--disable-software-rasterizer")
     options.add_argument("--remote-debugging-port=9222")
 
-    service = Service("/usr/bin/chromedriver")  # Ensure correct path if needed
+    service = Service(executable_path="/usr/lib/chromium/chromedriver")
     driver = webdriver.Chrome(service=service, options=options)
     return driver
 
