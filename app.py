@@ -92,21 +92,43 @@ def get_main_keywords(text, limit=8):
     sorted_keywords = sorted(frequency.items(), key=lambda x: x[1], reverse=True)
     return [kw[0] for kw in sorted_keywords[:limit]]
 
+# def write_brand_summary(url, keywords, site_info):
+#     if not keywords:
+#         return (
+#             f"{site_info['title'] if site_info['title'] else url} is a digital agency helping businesses grow through strategic marketing and performance-driven solutions. "
+#             f"The team focuses on delivering measurable results through creativity and execution."
+#         )
+
+#     key_areas = keywords[:3]
+#     support_areas = keywords[3:5] if len(keywords) > 4 else keywords[:2]
+
+#     return (
+#         f"{site_info['title'] if site_info['title'] else url} is a results-driven digital agency specializing in {key_areas[0]}, {key_areas[1]}, and {key_areas[2]}. "
+#         f"With a strong foundation in {support_areas[0]} and {support_areas[1] if len(support_areas) > 1 else key_areas[0]}, "
+#         f"the agency delivers tailored solutions that align with real business goals."
+#     )
+
 def write_brand_summary(url, keywords, site_info):
+    title = site_info['title'] if site_info['title'] else url
+
     if not keywords:
         return (
-            f"{site_info['title'] if site_info['title'] else url} is a digital agency helping businesses grow through strategic marketing and performance-driven solutions. "
+            f"{title} is a digital agency helping businesses grow through strategic marketing and performance-driven solutions. "
             f"The team focuses on delivering measurable results through creativity and execution."
         )
 
     key_areas = keywords[:3]
     support_areas = keywords[3:5] if len(keywords) > 4 else keywords[:2]
 
+    key_text = ", ".join(key_areas)
+    support_text = " and ".join(support_areas) if len(support_areas) > 1 else support_areas[0] if support_areas else "various areas"
+
     return (
-        f"{site_info['title'] if site_info['title'] else url} is a results-driven digital agency specializing in {key_areas[0]}, {key_areas[1]}, and {key_areas[2]}. "
-        f"With a strong foundation in {support_areas[0]} and {support_areas[1] if len(support_areas) > 1 else key_areas[0]}, "
+        f"{title} is a results-driven digital agency specializing in {key_text}. "
+        f"With a strong foundation in {support_text}, "
         f"the agency delivers tailored solutions that align with real business goals."
     )
+
 
 app = Flask(__name__)
 @app.route('/')
