@@ -22,14 +22,13 @@ from flask import Flask, render_template, request
 #     options.add_argument('--no-sandbox')
 #     driver = webdriver.Chrome(options=options)
 #     return driver
-
+from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-
-# from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
 
 def setup_driver():
     options = Options()
-    options.binary_location = "/usr/bin/chromium"
+    options.binary_location = "/usr/bin/google-chrome"  # ✅ correct binary path
     options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
@@ -37,7 +36,7 @@ def setup_driver():
     options.add_argument("--disable-software-rasterizer")
     options.add_argument("--remote-debugging-port=9222")
 
-    service = Service(executable_path="/usr/lib/chromium/chromedriver")
+    service = Service("/usr/bin/chromedriver")  # ✅ correct driver path
     driver = webdriver.Chrome(service=service, options=options)
     return driver
 
