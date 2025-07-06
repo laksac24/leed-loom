@@ -26,9 +26,13 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.options import Options
 
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium import webdriver
+
 def setup_driver():
     options = Options()
-    options.binary_location = "/usr/bin/google-chrome"  # ✅ correct binary path
+    options.binary_location = "/usr/bin/google-chrome"
     options.add_argument("--headless=new")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
@@ -36,9 +40,10 @@ def setup_driver():
     options.add_argument("--disable-software-rasterizer")
     options.add_argument("--remote-debugging-port=9222")
 
-    service = Service("/usr/bin/chromedriver")  # ✅ correct driver path
+    service = Service("/usr/local/bin/chromedriver")
     driver = webdriver.Chrome(service=service, options=options)
     return driver
+
 
 def scrape_website_info(url):
     driver = setup_driver()
